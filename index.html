@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daksh Patel — Cloud Infrastructure & Security Architect</title>
+<meta name="description" content="Cloud Infrastructure & Security Architect specializing in hybrid Azure environments, enterprise security, and scalable network systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DESIGN SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --void:     #050608;
+  --deep:     #080b10;
+  --surface:  #0d1117;
+  --panel:    #111820;
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.1);
+  --blue:     #3b82f6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --blue-glow:rgba(59,130,246,0.25);
+  --text:     #f0f4ff;
+  --muted:    #6b7a93;
+  --subtle:   #3a4455;
+  --mono:     'DM Mono', monospace;
+  --serif:    'Instrument Serif', serif;
+  --sans:     'Manrope', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--sans);
+  background: var(--void);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 1px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CANVAS BACKGROUND (Network topology animation)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#networkCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  padding: 1.4rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(5,6,8,0.92);
+  backdrop-filter: blur(24px);
+  border-bottom-color: var(--border);
+}
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+.nav-logo span { color: var(--blue); }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,0.4);
+  padding: 0.55rem 1.2rem;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.nav-cta:hover {
+  background: var(--blue-dim);
+  border-color: var(--blue);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 3rem 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.1s forwards;
+}
+.hero-eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--blue);
+  border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+.hero-eyebrow-text {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--blue);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hero-headline {
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 7vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  max-width: 820px;
+  margin-bottom: 1.8rem;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.25s forwards;
+}
+.hero-headline em {
+  font-style: italic;
+  color: var(--blue);
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 520px;
+  font-weight: 400;
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
+}
+
+.hero-mission {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--subtle);
+  letter-spacing: 0.08em;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.5s forwards;
+}
+.hero-mission span { color: var(--blue); }
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.65s forwards;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.9rem 2rem;
+  border-radius: 2px;
+  border: 1px solid var(--blue);
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 0 30px rgba(59,130,246,0.2);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--blue);
+  box-shadow: 0 0 50px rgba(59,130,246,0.3);
+}
+.btn-ghost {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-ghost:hover { color: var(--text); }
+.btn-ghost::after { content: '↗'; font-size: 0.8rem; }
+
+/* Hero scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
+}
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+  animation: scrollGrow 2s ease-in-out infinite;
+}
+.scroll-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--subtle);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
+
+/* Hero stats */
+.hero-stats {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  display: flex;
+  gap: 3rem;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.2s forwards;
+}
+.hero-stat-num {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1;
+  display: block;
+}
+.hero-stat-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.section-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 7rem 3rem;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--blue);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.section-tag::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.section-headline {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.section-headline em { font-style: italic; color: var(--blue); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DIVIDER LINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.divider {
+  height: 1px;
+  background: var(--border);
+  position: relative;
+  z-index: 1;
+}
+.divider::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(to right, var(--blue), transparent);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ABOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#about { background: var(--void); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 6rem;
+  align-items: start;
+  margin-top: 4rem;
+}
+
+.about-left {}
+
+.about-name-card {
+  border: 1px solid var(--border);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  background: var(--panel);
+}
+.about-name-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--blue);
+}
+.about-name {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+.about-title {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--blue);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.about-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.about-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.about-meta-icon { color: var(--blue); font-size: 0.8rem; }
+
+.about-story {}
+
+.about-story p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--muted);
+  margin-bottom: 1.4rem;
+  font-weight: 400;
+}
+.about-story p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.about-story .highlight {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EXPERTISE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#expertise { background: var(--deep); }
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.expertise-card {
+  background: var(--deep);
+  padding: 2.8rem 2.5rem;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.expertise-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--blue);
+  transition: width 0.4s ease;
+}
+.expertise-card:hover { background: var(--panel); }
+.expertise-card:hover::after { width: 100%; }
+
+.expertise-num {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--subtle);
+  letter-spacing: 0.2em;
+  margin-bottom: 1.8rem;
+}
+.expertise-icon {
+  width: 40px; height: 40px;
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+  font-size: 1.1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.expertise-card:hover .expertise-icon {
+  border-color: var(--blue);
+  box-shadow: 0 0 20px var(--blue-dim);
+}
+.expertise-title {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.expertise-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   IMPACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#impact { background: var(--void); }
+
+.impact-list {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.impact-item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: start;
+  gap: 2rem;
+  padding: 2.2rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+  cursor: default;
+}
+.impact-item:first-child { border-top: 1px solid var(--border); }
+.impact-item:hover { background: rgba(59,130,246,0.03); }
+.impact-item:hover .impact-line { width: 100%; }
+
+.impact-idx {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--subtle);
+  letter-spacing: 0.15em;
+  padding-top: 0.3rem;
+}
+.impact-body {}
+.impact-statement {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+}
+.impact-detail {
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.impact-metric {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-style: italic;
+  color: var(--blue);
+  text-align: right;
+  white-space: nowrap;
+  line-height: 1;
+  padding-top: 0.2rem;
+}
+.impact-metric small {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  font-style: normal;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.3rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TECH STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#stack { background: var(--deep); }
+
+.stack-groups {
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+}
+
+.stack-group-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--blue);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.stack-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.stack-pill {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  cursor: default;
+}
+.stack-pill:hover {
+  color: var(--blue);
+  border-color: rgba(59,130,246,0.4);
+  background: var(--blue-dim);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CERTIFICATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#certs { background: var(--void); }
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.cert-card {
+  background: var(--void);
+  padding: 2.5rem;
+  transition: background 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.cert-card:hover { background: var(--panel); }
+
+.cert-badge {
+  width: 44px; height: 44px;
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.cert-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--text);
+  line-height: 1.3;
+}
+.cert-issuer {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--blue);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.cert-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   VISION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#vision {
+  background: var(--deep);
+  position: relative;
+  overflow: hidden;
+}
+#vision::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.vision-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8rem 3rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.vision-quote {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin: 2rem 0;
+}
+.vision-quote em { color: var(--blue); font-style: normal; }
+
+.vision-body {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.9;
+  margin-top: 2rem;
+  font-weight: 400;
+}
+.vision-body strong { color: var(--text); font-weight: 600; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FINAL CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#cta {
+  background: var(--void);
+  border-top: 1px solid var(--border);
+}
+
+.cta-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.cta-left {}
+.cta-headline {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+.cta-headline em { font-style: italic; color: var(--blue); }
+.cta-sub {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+}
+
+.cta-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.contact-row:hover {
+  border-color: rgba(59,130,246,0.4);
+  background: var(--blue-dim);
+}
+.contact-row-icon {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--blue);
+  width: 20px;
+}
+.contact-row-text {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+}
+.contact-row:hover .contact-row-text { color: var(--text); }
+.contact-row-arrow {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--blue);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.2s;
+}
+.contact-row:hover .contact-row-arrow { opacity: 1; transform: translateX(0); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--subtle);
+  letter-spacing: 0.1em;
+}
+.footer-sig {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--subtle);
+}
+.footer-sig span { color: var(--blue); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ANIMATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+@keyframes scrollGrow {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  50%       { transform: scaleY(0.5) translateY(20px); }
+}
+
+/* Scroll-triggered reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 7rem 1.5rem 5rem; }
+  .hero-stats { display: none; }
+  .section-wrap { padding: 5rem 1.5rem; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .cta-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .expertise-grid { grid-template-columns: 1fr; }
+  .impact-item { grid-template-columns: 40px 1fr; }
+  .impact-metric { display: none; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+
+@media (max-width: 600px) {
+  .hero-headline { font-size: 2.8rem; }
+  .certs-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ━━ ANIMATED NETWORK CANVAS ━━ -->
+<canvas id="networkCanvas"></canvas>
+
+<!-- ━━ NAV ━━ -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">Daksh<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#vision">Vision</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Connect</a>
+</nav>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="home">
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      <span class="hero-eyebrow-text">Cloud Infrastructure · Security · Architecture</span>
+    </div>
+
+    <h1 class="hero-headline">
+      Building systems that<br><em>don't fail</em>.
+    </h1>
+
+    <p class="hero-sub">
+      Cloud Infrastructure & Security Architect designing hybrid Azure environments, hardened network perimeters, and enterprise-grade systems built for scale.
+    </p>
+
+    <p class="hero-mission">
+      <span>Mission —</span> Architect resilient digital infrastructure that protects what matters and scales without limits.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#impact" class="btn-primary">
+        View My Work ↓
+      </a>
+      <a href="mailto:daksh4959@gmail.com" class="btn-ghost">Open to Opportunities</a>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span class="scroll-label">Scroll</span>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <span class="hero-stat-num">2+</span>
+        <span class="hero-stat-label">Years in Enterprise Infra</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">6</span>
+        <span class="hero-stat-label">Core Disciplines</span>
+      </div>
+      <div>
+        <span class="hero-stat-num">2</span>
+        <span class="hero-stat-label">Industry Certifications</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ABOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-tag reveal">About</div>
+    <h2 class="section-headline reveal">From curiosity to<br><em>architecture</em>.</h2>
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <div class="about-name-card">
+          <div class="about-name">Daksh Patel</div>
+          <div class="about-title">Cloud Infra & Security Architect</div>
+        </div>
+        <div class="about-meta">
+          <div class="about-meta-item">
+            <span class="about-meta-icon">◎</span>
+            Toronto, Ontario, Canada
+          </div>
+          <div class="about-meta-item">
+            <span class="about-meta-icon">◎</span>
+            +1 (437) 262-3143
+          </div>
+          <div class="about-meta-item">
+            <span class="about-meta-icon">◎</span>
+            daksh4959@gmail.com
+          </div>
+          <div class="about-meta-item">
+            <span class="about-meta-icon">◎</span>
+            Loyalist College — CST Diploma
+          </div>
+          <div class="about-meta-item">
+            <span class="about-meta-icon">◎</span>
+            CCNA · AWS Cloud Practitioner
+          </div>
+        </div>
+      </div>
+
+      <div class="about-story reveal">
+        <p class="highlight">
+          I started where most engineers do — fascinated by how networks work, driven to understand every layer of the stack.
+        </p>
+        <p>
+          That curiosity became expertise. Through <strong>formal training at Loyalist College</strong>, hands-on field work, and deep immersion in enterprise environments, I moved from configuring initial devices to <strong>architecting multi-site hybrid cloud infrastructure</strong> that organizations depend on daily.
+        </p>
+        <p>
+          At <strong>Konverge Technologies</strong>, I stopped thinking in tasks and started thinking in systems. I led a full MDM platform migration to Azure Intune, implemented enterprise-wide zero-trust authentication with Windows Hello for Business, and designed hybrid Azure VPN architectures that connect on-premises operations to cloud-native services — all while maintaining the kind of uptime that makes infrastructure invisible.
+        </p>
+        <p>
+          I operate at the intersection of <strong>cloud architecture, network engineering, and cybersecurity</strong>. My goal isn't to keep systems running — it's to build systems that don't need to be kept running.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     EXPERTISE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="expertise">
+  <div class="section-wrap">
+    <div class="section-tag reveal">Expertise</div>
+    <h2 class="section-headline reveal">Not just skills.<br><em>Disciplines</em>.</h2>
+    <div class="expertise-grid reveal">
+
+      <div class="expertise-card">
+        <div class="expertise-num">01</div>
+        <div class="expertise-icon">☁</div>
+        <div class="expertise-title">Cloud Architecture</div>
+        <p class="expertise-desc">Designing hybrid Azure environments that bridge on-premises infrastructure with cloud-native services. Specialization in VNet topology, Application Gateway, WAF, Load Balancer, and Monitor — architected for resilience and cost efficiency.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-num">02</div>
+        <div class="expertise-icon">⬡</div>
+        <div class="expertise-title">Network Engineering</div>
+        <p class="expertise-desc">Building and migrating enterprise LAN/WAN environments across multi-site topologies. Fluent in OSPF, BGP, EIGRP, VLANs, and VPN configurations — designing networks that route intelligently and fail gracefully.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-num">03</div>
+        <div class="expertise-icon">⬢</div>
+        <div class="expertise-title">Cybersecurity & Identity</div>
+        <p class="expertise-desc">Implementing zero-trust security models through Azure AD, RBAC, IAM policies, and Windows Hello for Business. Enforcing firewall rulesets, conducting vulnerability assessments, and building security-first infrastructure from the ground up.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-num">04</div>
+        <div class="expertise-icon">⚙</div>
+        <div class="expertise-title">Infrastructure Automation</div>
+        <p class="expertise-desc">Developing custom scripts and automation tools that eliminate manual overhead from DNS management, bulk network operations, and endpoint configuration. Turning repetitive operations into zero-touch workflows.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-num">05</div>
+        <div class="expertise-icon">▣</div>
+        <div class="expertise-title">Virtualization & Compute</div>
+        <p class="expertise-desc">Managing VMware ESXi environments with precision — VM provisioning, resource allocation, storage management, snapshot strategies, and backup scheduling. Building the virtual compute layer that applications run on.</p>
+      </div>
+
+      <div class="expertise-card">
+        <div class="expertise-num">06</div>
+        <div class="expertise-icon">◈</div>
+        <div class="expertise-title">Enterprise SLA Leadership</div>
+        <p class="expertise-desc">Operating as Tier 2/3 escalation authority — resolving Layer 2 through Layer 7 issues under time pressure. Maintaining technical documentation, SOPs, and low-level designs that keep institutional knowledge alive.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     IMPACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="impact">
+  <div class="section-wrap">
+    <div class="section-tag reveal">Impact</div>
+    <h2 class="section-headline reveal">Execution that<br><em>moved the needle</em>.</h2>
+
+    <div class="impact-list reveal">
+
+      <div class="impact-item">
+        <div class="impact-idx">01</div>
+        <div class="impact-body">
+          <div class="impact-statement">Enterprise MDM Platform Migration</div>
+          <div class="impact-detail">Led full migration from Cisco MDM to Microsoft Intune (Azure MDM) — redesigning the endpoint management layer with modern compliance controls, automated enrollment policies, and zero-trust device access for the entire organization.</div>
+        </div>
+        <div class="impact-metric">100%<small>Fleet Migrated</small></div>
+      </div>
+
+      <div class="impact-item">
+        <div class="impact-idx">02</div>
+        <div class="impact-body">
+          <div class="impact-statement">Zero-Trust Authentication Deployment</div>
+          <div class="impact-detail">Implemented Windows Hello for Business organization-wide — eliminating password-based authentication vulnerabilities and replacing them with hardware-bound, biometric-backed identity verification across all managed endpoints.</div>
+        </div>
+        <div class="impact-metric">0<small>Password Exposures Post-Deploy</small></div>
+      </div>
+
+      <div class="impact-item">
+        <div class="impact-idx">03</div>
+        <div class="impact-body">
+          <div class="impact-statement">Multi-Site Network Architecture & Migration</div>
+          <div class="impact-detail">Spearheaded a comprehensive network migration across three Canadian branch locations — re-architecting topology, deploying Cisco Meraki switching infrastructure, establishing secure VPN tunnels, and bringing full documentation coverage to each site.</div>
+        </div>
+        <div class="impact-metric">3<small>Sites Migrated</small></div>
+      </div>
+
+      <div class="impact-item">
+        <div class="impact-idx">04</div>
+        <div class="impact-body">
+          <div class="impact-statement">Hybrid Azure Cloud Infrastructure Design</div>
+          <div class="impact-detail">Designed and administered a hybrid cloud environment connecting on-premises networks to Azure — implementing Application Gateway, WAF, Load Balancer, Log Analytics, and Azure Security Center as an integrated, monitored security perimeter.</div>
+        </div>
+        <div class="impact-metric">24/7<small>Monitored Uptime</small></div>
+      </div>
+
+      <div class="impact-item">
+        <div class="impact-idx">05</div>
+        <div class="impact-body">
+          <div class="impact-statement">Firewall Architecture & Perimeter Hardening</div>
+          <div class="impact-detail">Configured and maintained Fortinet and Cisco firewall rulesets — implementing NAT policies, Site-to-Site VPN configurations, and conducting periodic security audits to close attack surface vulnerabilities before they could be exploited.</div>
+        </div>
+        <div class="impact-metric">↓<small>Attack Surface Reduced</small></div>
+      </div>
+
+      <div class="impact-item">
+        <div class="impact-idx">06</div>
+        <div class="impact-body">
+          <div class="impact-statement">Infrastructure Automation & Script Development</div>
+          <div class="impact-detail">Built custom automation tooling to streamline DNS management and bulk network operations — converting hours of manual administrative overhead into repeatable, reliable automated workflows that scale with the environment.</div>
+        </div>
+        <div class="impact-metric">∞<small>Hours Returned to Engineering</small></div>
+      </div>
+
+      <div class="impact-item">
+        <div class="impact-idx">07</div>
+        <div class="impact-body">
+          <div class="impact-statement">24/7 Tier 2/3 Escalation & SLA Compliance</div>
+          <div class="impact-detail">Served as the final escalation point for complex infrastructure incidents — resolving Layer 2 through Layer 7 issues, managing incident queues, and maintaining SLA compliance under production pressure while documenting every resolution as institutional knowledge.</div>
+        </div>
+        <div class="impact-metric">T2/T3<small>Escalation Authority</small></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="stack">
+  <div class="section-wrap">
+    <div class="section-tag reveal">Tech Stack</div>
+    <h2 class="section-headline reveal">Tools wielded<br>with <em>precision</em>.</h2>
+
+    <div class="stack-groups reveal">
+      <div>
+        <div class="stack-group-label">Cloud & Azure</div>
+        <div class="stack-pills">
+          <span class="stack-pill">Microsoft Azure</span>
+          <span class="stack-pill">Azure AD</span>
+          <span class="stack-pill">Azure Monitor</span>
+          <span class="stack-pill">Log Analytics</span>
+          <span class="stack-pill">Application Gateway</span>
+          <span class="stack-pill">WAF</span>
+          <span class="stack-pill">Load Balancer</span>
+          <span class="stack-pill">Azure Security Center</span>
+          <span class="stack-pill">Microsoft Intune</span>
+          <span class="stack-pill">Office 365</span>
+        </div>
+      </div>
+      <div>
+        <div class="stack-group-label">Network & Security</div>
+        <div class="stack-pills">
+          <span class="stack-pill">Fortinet Firewall</span>
+          <span class="stack-pill">Cisco IOS</span>
+          <span class="stack-pill">Cisco Meraki</span>
+          <span class="stack-pill">Cisco ISE</span>
+          <span class="stack-pill">WatchGuard</span>
+          <span class="stack-pill">Juniper</span>
+          <span class="stack-pill">OSPF</span>
+          <span class="stack-pill">BGP</span>
+          <span class="stack-pill">EIGRP</span>
+          <span class="stack-pill">Site-to-Site VPN</span>
+          <span class="stack-pill">VLAN / STP / ACL</span>
+        </div>
+      </div>
+      <div>
+        <div class="stack-group-label">Identity & Endpoint</div>
+        <div class="stack-pills">
+          <span class="stack-pill">Active Directory</span>
+          <span class="stack-pill">Group Policy (GPO)</span>
+          <span class="stack-pill">RBAC</span>
+          <span class="stack-pill">IAM Policies</span>
+          <span class="stack-pill">Windows Hello for Business</span>
+          <span class="stack-pill">MDM / MAM</span>
+        </div>
+      </div>
+      <div>
+        <div class="stack-group-label">Virtualization & Ops</div>
+        <div class="stack-pills">
+          <span class="stack-pill">VMware ESXi</span>
+          <span class="stack-pill">Windows Server</span>
+          <span class="stack-pill">Linux</span>
+          <span class="stack-pill">Wireshark</span>
+          <span class="stack-pill">MS Visio</span>
+          <span class="stack-pill">Site24x7</span>
+          <span class="stack-pill">DNS / DHCP / NAT</span>
+          <span class="stack-pill">TCP/IP</span>
+          <span class="stack-pill">SNMP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CERTIFICATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="certs">
+  <div class="section-wrap">
+    <div class="section-tag reveal">Credentials</div>
+    <h2 class="section-headline reveal">Validated by<br><em>industry standards</em>.</h2>
+
+    <div class="certs-grid reveal">
+      <div class="cert-card">
+        <div class="cert-badge">◈</div>
+        <div class="cert-name">Cisco Certified Network Associate</div>
+        <div class="cert-issuer">Cisco Systems</div>
+        <div class="cert-desc">Validates the ability to install, configure, operate, and troubleshoot medium-size routed and switched networks. Covers IP addressing, routing protocols, VLANs, WAN, and network security fundamentals.</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">☁</div>
+        <div class="cert-name">AWS Cloud Practitioner</div>
+        <div class="cert-issuer">Amazon Web Services</div>
+        <div class="cert-desc">Foundational certification validating cloud fluency across AWS infrastructure, core services, security architecture, pricing models, and deployment methodology — essential context for multi-cloud strategy.</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">◉</div>
+        <div class="cert-name">Diploma — Computer System Technician</div>
+        <div class="cert-issuer">Loyalist College, Toronto</div>
+        <div class="cert-desc">Comprehensive technical foundation covering networking, systems administration, operating systems, hardware, and enterprise IT operations — the academic architecture underlying every deployment decision.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     VISION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="vision">
+  <div class="vision-inner">
+    <div class="section-tag reveal" style="justify-content:center; text-align:center;">Future Vision</div>
+    <div class="vision-quote reveal">
+      "The infrastructure I build today<br>should still be standing — and scaling — <em>ten years from now</em>."
+    </div>
+    <p class="vision-body reveal">
+      I believe the next decade of enterprise technology will be defined not by the tools we use, but by the <strong>architects who understand how to connect them</strong>. My trajectory points toward designing <strong>globally distributed, zero-trust cloud infrastructure</strong> that organizations can build their most critical operations on — without compromise.
+      <br><br>
+      I'm working toward deep specialization in <strong>Azure security architecture, network automation at scale, and AI-augmented infrastructure operations</strong> — building the skills to architect systems that don't just withstand the future but anticipate it. The goal isn't a bigger title. <strong>It's bigger impact.</strong>
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="cta-left reveal">
+      <h2 class="cta-headline">Let's build <em>resilient</em><br>infrastructure together.</h2>
+      <p class="cta-sub">Open to senior infrastructure roles, cloud architecture positions, and forward-thinking organizations that take their systems as seriously as I do.</p>
+      <a href="mailto:daksh4959@gmail.com" class="btn-primary" style="display:inline-flex;">
+        Start a Conversation →
+      </a>
+    </div>
+    <div class="cta-right reveal">
+      <a href="mailto:daksh4959@gmail.com" class="contact-row">
+        <span class="contact-row-icon">@</span>
+        <span class="contact-row-text">daksh4959@gmail.com</span>
+        <span class="contact-row-arrow">→</span>
+      </a>
+      <a href="tel:+14372623143" class="contact-row">
+        <span class="contact-row-icon">◎</span>
+        <span class="contact-row-text">+1 (437) 262-3143</span>
+        <span class="contact-row-arrow">→</span>
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-row">
+        <span class="contact-row-icon">in</span>
+        <span class="contact-row-text">LinkedIn Profile</span>
+        <span class="contact-row-arrow">→</span>
+      </a>
+      <a href="#" class="contact-row">
+        <span class="contact-row-icon">↓</span>
+        <span class="contact-row-text">Download Resume (PDF)</span>
+        <span class="contact-row-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ━━ FOOTER ━━ -->
+<footer>
+  <span class="footer-copy">© 2025 Daksh Patel · Toronto, Ontario</span>
+  <span class="footer-sig">Cloud Infra & Security <span>Architect</span></span>
+</footer>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     JAVASCRIPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<script>
+/* ── NETWORK CANVAS ───────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('networkCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes, animId;
+  const NODE_COUNT = 55;
+  const MAX_DIST = 160;
+  const BLUE = '59,130,246';
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeNode() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.8 + 0.5,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.012 + Math.random() * 0.008,
+    };
+  }
+
+  function init() {
+    resize();
+    nodes = Array.from({ length: NODE_COUNT }, makeNode);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Update positions
+    for (const n of nodes) {
+      n.x += n.vx;
+      n.y += n.vy;
+      n.pulse += n.pulseSpeed;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    }
+
+    // Draw edges
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < MAX_DIST) {
+          const alpha = (1 - dist / MAX_DIST) * 0.35;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(${BLUE},${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    for (const n of nodes) {
+      const glow = (Math.sin(n.pulse) + 1) * 0.5;
+      const alpha = 0.3 + glow * 0.5;
+      const radius = n.r + glow * 1.5;
+
+      // Outer glow
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius * 5);
+      grad.addColorStop(0, `rgba(${BLUE},${alpha * 0.4})`);
+      grad.addColorStop(1, `rgba(${BLUE},0)`);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, radius * 5, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Core node
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${BLUE},${alpha})`;
+      ctx.fill();
+    }
+
+    animId = requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', () => { cancelAnimationFrame(animId); init(); draw(); });
+})();
+
+/* ── NAV SCROLL ──────────────────────────────────── */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ── SCROLL REVEAL ───────────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('in'), i * 80);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── IMPACT ROW HOVER LINE ───────────────────────── */
+// Handled purely in CSS via the ::after pseudo-element pattern above.
+// Additional: add a subtle data-packet animation on hover
+document.querySelectorAll('.impact-item').forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    item.style.paddingLeft = '1rem';
+    item.style.transition = 'padding 0.3s ease';
+  });
+  item.addEventListener('mouseleave', () => {
+    item.style.paddingLeft = '';
+  });
+});
+</script>
+</body>
+</html>
