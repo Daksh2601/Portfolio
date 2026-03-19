@@ -23,6 +23,8 @@
   --blue:     #3b82f6;
   --blue-dim: rgba(59,130,246,0.12);
   --blue-glow:rgba(59,130,246,0.25);
+  --green:    #10b981;
+  --green-dim:rgba(16,185,129,0.1);
   --text:     #f0f4ff;
   --muted:    #6b7a93;
   --subtle:   #3a4455;
@@ -51,7 +53,7 @@ img { display: block; max-width: 100%; }
 ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 1px; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CANVAS BACKGROUND (Network topology animation)
+   CANVAS BACKGROUND
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #networkCanvas {
   position: fixed;
@@ -242,7 +244,6 @@ nav.scrolled {
 .btn-ghost:hover { color: var(--text); }
 .btn-ghost::after { content: '↗'; font-size: 0.8rem; }
 
-/* Hero scroll indicator */
 .hero-scroll {
   position: absolute;
   bottom: 2.5rem;
@@ -270,7 +271,6 @@ nav.scrolled {
   transform: rotate(180deg);
 }
 
-/* Hero stats */
 .hero-stats {
   position: absolute;
   bottom: 3rem;
@@ -301,10 +301,7 @@ nav.scrolled {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SECTION SYSTEM
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-section {
-  position: relative;
-  z-index: 1;
-}
+section { position: relative; z-index: 1; }
 
 .section-wrap {
   max-width: 1200px;
@@ -342,7 +339,7 @@ section {
 .section-headline em { font-style: italic; color: var(--blue); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   DIVIDER LINE
+   DIVIDER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .divider {
   height: 1px;
@@ -353,10 +350,8 @@ section {
 .divider::after {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 120px;
-  height: 1px;
+  left: 0; top: 0;
+  width: 120px; height: 1px;
   background: linear-gradient(to right, var(--blue), transparent);
 }
 
@@ -372,8 +367,6 @@ section {
   align-items: start;
   margin-top: 4rem;
 }
-
-.about-left {}
 
 .about-name-card {
   border: 1px solid var(--border);
@@ -420,8 +413,6 @@ section {
 }
 .about-meta-icon { color: var(--blue); font-size: 0.8rem; }
 
-.about-story {}
-
 .about-story p {
   font-size: 1.05rem;
   line-height: 1.85;
@@ -429,10 +420,7 @@ section {
   margin-bottom: 1.4rem;
   font-weight: 400;
 }
-.about-story p strong {
-  color: var(--text);
-  font-weight: 600;
-}
+.about-story p strong { color: var(--text); font-weight: 600; }
 .about-story .highlight {
   color: var(--text);
   font-size: 1.15rem;
@@ -526,12 +514,15 @@ section {
   gap: 2rem;
   padding: 2.2rem 0;
   border-bottom: 1px solid var(--border);
-  transition: background 0.2s;
+  transition: background 0.2s, padding-left 0.3s ease;
   cursor: default;
 }
 .impact-item:first-child { border-top: 1px solid var(--border); }
 .impact-item:hover { background: rgba(59,130,246,0.03); }
-.impact-item:hover .impact-line { width: 100%; }
+
+/* Lab project items get green accent on hover */
+.impact-item.lab-project:hover { background: rgba(16,185,129,0.04); }
+.impact-item.lab-project .impact-metric { color: var(--green); }
 
 .impact-idx {
   font-family: var(--mono);
@@ -540,7 +531,6 @@ section {
   letter-spacing: 0.15em;
   padding-top: 0.3rem;
 }
-.impact-body {}
 .impact-statement {
   font-size: 1.05rem;
   font-weight: 600;
@@ -548,11 +538,83 @@ section {
   line-height: 1.4;
   margin-bottom: 0.4rem;
 }
+/* Clickable lab project title */
+.impact-statement a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.impact-statement a:hover { color: var(--green); }
+.impact-statement a .gh-arrow {
+  font-size: 0.8rem;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s;
+  color: var(--green);
+}
+.impact-statement a:hover .gh-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .impact-detail {
   font-size: 0.84rem;
   color: var(--muted);
   line-height: 1.6;
 }
+
+/* Lab project tags */
+.impact-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+.impact-tag {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1px;
+  text-transform: uppercase;
+}
+.impact-tag.green {
+  color: var(--green);
+  border: 1px solid rgba(16,185,129,0.3);
+  background: rgba(16,185,129,0.06);
+}
+.impact-tag.blue {
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,0.3);
+  background: rgba(59,130,246,0.06);
+}
+
+/* GitHub link button for lab projects */
+.github-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 1px solid rgba(16,185,129,0.3);
+  padding: 0.35rem 0.8rem;
+  border-radius: 1px;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.github-link-btn:hover {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+}
+
 .impact-metric {
   font-family: var(--serif);
   font-size: 1.8rem;
@@ -597,11 +659,7 @@ section {
   border-bottom: 1px solid var(--border);
 }
 
-.stack-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+.stack-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 .stack-pill {
   font-family: var(--mono);
@@ -736,7 +794,6 @@ section {
   align-items: center;
 }
 
-.cta-left {}
 .cta-headline {
   font-family: var(--serif);
   font-size: clamp(2.2rem, 4vw, 3.5rem);
@@ -782,10 +839,9 @@ section {
   width: 20px;
 }
 .contact-row-text {
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.78rem;
   letter-spacing: 0.05em;
 }
 .contact-row:hover .contact-row-text { color: var(--text); }
@@ -847,7 +903,6 @@ footer {
   50%       { transform: scaleY(0.5) translateY(20px); }
 }
 
-/* Scroll-triggered reveal */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
@@ -880,7 +935,6 @@ footer {
 </head>
 <body>
 
-<!-- ━━ ANIMATED NETWORK CANVAS ━━ -->
 <canvas id="networkCanvas"></canvas>
 
 <!-- ━━ NAV ━━ -->
@@ -896,40 +950,24 @@ footer {
   <a href="#cta" class="nav-cta">Connect</a>
 </nav>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     HERO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ HERO ━━ -->
 <section id="home">
   <div class="hero">
     <div class="hero-eyebrow">
       <div class="hero-eyebrow-dot"></div>
       <span class="hero-eyebrow-text">Cloud Infrastructure · Security · Architecture</span>
     </div>
-
-    <h1 class="hero-headline">
-      Building systems that<br><em>don't fail</em>.
-    </h1>
-
-    <p class="hero-sub">
-      Cloud Infrastructure & Security Architect designing hybrid Azure environments, hardened network perimeters, and enterprise-grade systems built for scale.
-    </p>
-
-    <p class="hero-mission">
-      <span>Mission —</span> Architect resilient digital infrastructure that protects what matters and scales without limits.
-    </p>
-
+    <h1 class="hero-headline">Building systems that<br><em>don't fail</em>.</h1>
+    <p class="hero-sub">Cloud Infrastructure & Security Architect designing hybrid Azure environments, hardened network perimeters, and enterprise-grade systems built for scale.</p>
+    <p class="hero-mission"><span>Mission —</span> Architect resilient digital infrastructure that protects what matters and scales without limits.</p>
     <div class="hero-actions">
-      <a href="#impact" class="btn-primary">
-        View My Work ↓
-      </a>
+      <a href="#impact" class="btn-primary">View My Work ↓</a>
       <a href="mailto:daksh4959@gmail.com" class="btn-ghost">Open to Opportunities</a>
     </div>
-
     <div class="hero-scroll">
       <div class="scroll-line"></div>
       <span class="scroll-label">Scroll</span>
     </div>
-
     <div class="hero-stats">
       <div>
         <span class="hero-stat-num">2+</span>
@@ -949,9 +987,7 @@ footer {
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ABOUT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ ABOUT ━━ -->
 <section id="about">
   <div class="section-wrap">
     <div class="section-tag reveal">About</div>
@@ -963,42 +999,18 @@ footer {
           <div class="about-title">Cloud Infra & Security Architect</div>
         </div>
         <div class="about-meta">
-          <div class="about-meta-item">
-            <span class="about-meta-icon">◎</span>
-            Toronto, Ontario, Canada
-          </div>
-          <div class="about-meta-item">
-            <span class="about-meta-icon">◎</span>
-            +1 (437) 262-3143
-          </div>
-          <div class="about-meta-item">
-            <span class="about-meta-icon">◎</span>
-            daksh4959@gmail.com
-          </div>
-          <div class="about-meta-item">
-            <span class="about-meta-icon">◎</span>
-            Loyalist College — CST Diploma
-          </div>
-          <div class="about-meta-item">
-            <span class="about-meta-icon">◎</span>
-            CCNA · AWS Cloud Practitioner
-          </div>
+          <div class="about-meta-item"><span class="about-meta-icon">◎</span>Toronto, Ontario, Canada</div>
+          <div class="about-meta-item"><span class="about-meta-icon">◎</span>+1 (437) 262-3143</div>
+          <div class="about-meta-item"><span class="about-meta-icon">◎</span>daksh4959@gmail.com</div>
+          <div class="about-meta-item"><span class="about-meta-icon">◎</span>Loyalist College — CST Diploma</div>
+          <div class="about-meta-item"><span class="about-meta-icon">◎</span>CCNA · AWS Cloud Practitioner</div>
         </div>
       </div>
-
       <div class="about-story reveal">
-        <p class="highlight">
-          I started where most engineers do — fascinated by how networks work, driven to understand every layer of the stack.
-        </p>
-        <p>
-          That curiosity became expertise. Through <strong>formal training at Loyalist College</strong>, hands-on field work, and deep immersion in enterprise environments, I moved from configuring initial devices to <strong>architecting multi-site hybrid cloud infrastructure</strong> that organizations depend on daily.
-        </p>
-        <p>
-          At <strong>Konverge Technologies</strong>, I stopped thinking in tasks and started thinking in systems. I led a full MDM platform migration to Azure Intune, implemented enterprise-wide zero-trust authentication with Windows Hello for Business, and designed hybrid Azure VPN architectures that connect on-premises operations to cloud-native services — all while maintaining the kind of uptime that makes infrastructure invisible.
-        </p>
-        <p>
-          I operate at the intersection of <strong>cloud architecture, network engineering, and cybersecurity</strong>. My goal isn't to keep systems running — it's to build systems that don't need to be kept running.
-        </p>
+        <p class="highlight">I started where most engineers do — fascinated by how networks work, driven to understand every layer of the stack.</p>
+        <p>That curiosity became expertise. Through <strong>formal training at Loyalist College</strong>, hands-on field work, and deep immersion in enterprise environments, I moved from configuring initial devices to <strong>architecting multi-site hybrid cloud infrastructure</strong> that organizations depend on daily.</p>
+        <p>At <strong>Konverge Technologies</strong>, I stopped thinking in tasks and started thinking in systems. I led a full MDM platform migration to Azure Intune, implemented enterprise-wide zero-trust authentication with Windows Hello for Business, and designed hybrid Azure VPN architectures that connect on-premises operations to cloud-native services — all while maintaining the kind of uptime that makes infrastructure invisible.</p>
+        <p>I operate at the intersection of <strong>cloud architecture, network engineering, and cybersecurity</strong>. My goal isn't to keep systems running — it's to build systems that don't need to be kept running.</p>
       </div>
     </div>
   </div>
@@ -1006,66 +1018,55 @@ footer {
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     EXPERTISE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ EXPERTISE ━━ -->
 <section id="expertise">
   <div class="section-wrap">
     <div class="section-tag reveal">Expertise</div>
     <h2 class="section-headline reveal">Not just skills.<br><em>Disciplines</em>.</h2>
     <div class="expertise-grid reveal">
-
       <div class="expertise-card">
         <div class="expertise-num">01</div>
         <div class="expertise-icon">☁</div>
         <div class="expertise-title">Cloud Architecture</div>
         <p class="expertise-desc">Designing hybrid Azure environments that bridge on-premises infrastructure with cloud-native services. Specialization in VNet topology, Application Gateway, WAF, Load Balancer, and Monitor — architected for resilience and cost efficiency.</p>
       </div>
-
       <div class="expertise-card">
         <div class="expertise-num">02</div>
         <div class="expertise-icon">⬡</div>
         <div class="expertise-title">Network Engineering</div>
         <p class="expertise-desc">Building and migrating enterprise LAN/WAN environments across multi-site topologies. Fluent in OSPF, BGP, EIGRP, VLANs, and VPN configurations — designing networks that route intelligently and fail gracefully.</p>
       </div>
-
       <div class="expertise-card">
         <div class="expertise-num">03</div>
         <div class="expertise-icon">⬢</div>
         <div class="expertise-title">Cybersecurity & Identity</div>
         <p class="expertise-desc">Implementing zero-trust security models through Azure AD, RBAC, IAM policies, and Windows Hello for Business. Enforcing firewall rulesets, conducting vulnerability assessments, and building security-first infrastructure from the ground up.</p>
       </div>
-
       <div class="expertise-card">
         <div class="expertise-num">04</div>
         <div class="expertise-icon">⚙</div>
         <div class="expertise-title">Infrastructure Automation</div>
         <p class="expertise-desc">Developing custom scripts and automation tools that eliminate manual overhead from DNS management, bulk network operations, and endpoint configuration. Turning repetitive operations into zero-touch workflows.</p>
       </div>
-
       <div class="expertise-card">
         <div class="expertise-num">05</div>
         <div class="expertise-icon">▣</div>
         <div class="expertise-title">Virtualization & Compute</div>
         <p class="expertise-desc">Managing VMware ESXi environments with precision — VM provisioning, resource allocation, storage management, snapshot strategies, and backup scheduling. Building the virtual compute layer that applications run on.</p>
       </div>
-
       <div class="expertise-card">
         <div class="expertise-num">06</div>
         <div class="expertise-icon">◈</div>
         <div class="expertise-title">Enterprise SLA Leadership</div>
         <p class="expertise-desc">Operating as Tier 2/3 escalation authority — resolving Layer 2 through Layer 7 issues under time pressure. Maintaining technical documentation, SOPs, and low-level designs that keep institutional knowledge alive.</p>
       </div>
-
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     IMPACT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ IMPACT ━━ -->
 <section id="impact">
   <div class="section-wrap">
     <div class="section-tag reveal">Impact</div>
@@ -1118,22 +1119,56 @@ footer {
         <div class="impact-metric">↓<small>Attack Surface Reduced</small></div>
       </div>
 
-      <div class="impact-item">
+      <!-- ── LAB PROJECT 1 ── -->
+      <div class="impact-item lab-project">
         <div class="impact-idx">06</div>
         <div class="impact-body">
-          <div class="impact-statement">Infrastructure Automation & Script Development</div>
-          <div class="impact-detail">Built custom automation tooling to streamline DNS management and bulk network operations — converting hours of manual administrative overhead into repeatable, reliable automated workflows that scale with the environment.</div>
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/vlan-intervlan-routing-lab" target="_blank" rel="noopener">
+              VLAN &amp; Inter-VLAN Routing Lab
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Simulated a 3-department enterprise network in Cisco Packet Tracer — configuring VLAN segmentation (IT/HR/Guest), 802.1Q trunking, Layer 3 inter-VLAN routing via SVI on a Cisco 3560, and extended ACLs blocking Guest traffic from internal networks. Verified with show vlan brief, show interfaces trunk, and show ip route.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Cisco Packet Tracer</span>
+            <span class="impact-tag blue">VLAN</span>
+            <span class="impact-tag blue">802.1Q Trunking</span>
+            <span class="impact-tag blue">Inter-VLAN Routing</span>
+            <span class="impact-tag blue">ACL</span>
+            <span class="impact-tag green">CCNA Lab</span>
+          </div>
+          <a href="https://github.com/Daksh2601/vlan-intervlan-routing-lab" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
         </div>
-        <div class="impact-metric">∞<small>Hours Returned to Engineering</small></div>
+        <div class="impact-metric">✓<small>Lab Complete</small></div>
       </div>
 
-      <div class="impact-item">
+      <!-- ── LAB PROJECT 2 ── -->
+      <div class="impact-item lab-project">
         <div class="impact-idx">07</div>
         <div class="impact-body">
-          <div class="impact-statement">24/7 Tier 2/3 Escalation & SLA Compliance</div>
-          <div class="impact-detail">Served as the final escalation point for complex infrastructure incidents — resolving Layer 2 through Layer 7 issues, managing incident queues, and maintaining SLA compliance under production pressure while documenting every resolution as institutional knowledge.</div>
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/dns-dhcp-linux-lab" target="_blank" rel="noopener">
+              DNS &amp; DHCP Server Lab — Ubuntu Server
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Deployed BIND9 authoritative DNS and ISC-DHCP-Server on Ubuntu Server 24.04 LTS inside VirtualBox — configuring the lab.local DNS zone, dynamic IP allocation (192.168.56.100–200), static interface via Netplan, and remote SSH management. Diagnosed and resolved 7 real infrastructure issues end-to-end.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Ubuntu Server 24.04</span>
+            <span class="impact-tag blue">BIND9 DNS</span>
+            <span class="impact-tag blue">ISC-DHCP</span>
+            <span class="impact-tag blue">Netplan</span>
+            <span class="impact-tag blue">SSH</span>
+            <span class="impact-tag green">Linux Admin</span>
+          </div>
+          <a href="https://github.com/Daksh2601/dns-dhcp-linux-lab" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
         </div>
-        <div class="impact-metric">T2/T3<small>Escalation Authority</small></div>
+        <div class="impact-metric">✓<small>Lab Complete</small></div>
       </div>
 
     </div>
@@ -1142,14 +1177,11 @@ footer {
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     STACK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ STACK ━━ -->
 <section id="stack">
   <div class="section-wrap">
     <div class="section-tag reveal">Tech Stack</div>
     <h2 class="section-headline reveal">Tools wielded<br>with <em>precision</em>.</h2>
-
     <div class="stack-groups reveal">
       <div>
         <div class="stack-group-label">Cloud & Azure</div>
@@ -1213,14 +1245,11 @@ footer {
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     CERTIFICATIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ CERTIFICATIONS ━━ -->
 <section id="certs">
   <div class="section-wrap">
     <div class="section-tag reveal">Credentials</div>
     <h2 class="section-headline reveal">Validated by<br><em>industry standards</em>.</h2>
-
     <div class="certs-grid reveal">
       <div class="cert-card">
         <div class="cert-badge">◈</div>
@@ -1246,9 +1275,7 @@ footer {
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     VISION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ VISION ━━ -->
 <section id="vision">
   <div class="vision-inner">
     <div class="section-tag reveal" style="justify-content:center; text-align:center;">Future Vision</div>
@@ -1265,17 +1292,13 @@ footer {
 
 <div class="divider"></div>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     CTA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ CTA ━━ -->
 <section id="cta">
   <div class="cta-inner">
     <div class="cta-left reveal">
       <h2 class="cta-headline">Let's build <em>resilient</em><br>infrastructure together.</h2>
       <p class="cta-sub">Open to senior infrastructure roles, cloud architecture positions, and forward-thinking organizations that take their systems as seriously as I do.</p>
-      <a href="mailto:daksh4959@gmail.com" class="btn-primary" style="display:inline-flex;">
-        Start a Conversation →
-      </a>
+      <a href="mailto:daksh4959@gmail.com" class="btn-primary" style="display:inline-flex;">Start a Conversation →</a>
     </div>
     <div class="cta-right reveal">
       <a href="mailto:daksh4959@gmail.com" class="contact-row">
@@ -1308,11 +1331,9 @@ footer {
   <span class="footer-sig">Cloud Infra & Security <span>Architect</span></span>
 </footer>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     JAVASCRIPT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ━━ JAVASCRIPT ━━ -->
 <script>
-/* ── NETWORK CANVAS ───────────────────────────────── */
+/* ── NETWORK CANVAS ── */
 (function() {
   const canvas = document.getElementById('networkCanvas');
   const ctx = canvas.getContext('2d');
@@ -1338,24 +1359,15 @@ footer {
     };
   }
 
-  function init() {
-    resize();
-    nodes = Array.from({ length: NODE_COUNT }, makeNode);
-  }
+  function init() { resize(); nodes = Array.from({ length: NODE_COUNT }, makeNode); }
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-
-    // Update positions
     for (const n of nodes) {
-      n.x += n.vx;
-      n.y += n.vy;
-      n.pulse += n.pulseSpeed;
+      n.x += n.vx; n.y += n.vy; n.pulse += n.pulseSpeed;
       if (n.x < 0 || n.x > W) n.vx *= -1;
       if (n.y < 0 || n.y > H) n.vy *= -1;
     }
-
-    // Draw edges
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dx = nodes[i].x - nodes[j].x;
@@ -1372,14 +1384,10 @@ footer {
         }
       }
     }
-
-    // Draw nodes
     for (const n of nodes) {
       const glow = (Math.sin(n.pulse) + 1) * 0.5;
       const alpha = 0.3 + glow * 0.5;
       const radius = n.r + glow * 1.5;
-
-      // Outer glow
       const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius * 5);
       grad.addColorStop(0, `rgba(${BLUE},${alpha * 0.4})`);
       grad.addColorStop(1, `rgba(${BLUE},0)`);
@@ -1387,29 +1395,25 @@ footer {
       ctx.arc(n.x, n.y, radius * 5, 0, Math.PI * 2);
       ctx.fillStyle = grad;
       ctx.fill();
-
-      // Core node
       ctx.beginPath();
       ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${BLUE},${alpha})`;
       ctx.fill();
     }
-
     animId = requestAnimationFrame(draw);
   }
 
-  init();
-  draw();
+  init(); draw();
   window.addEventListener('resize', () => { cancelAnimationFrame(animId); init(); draw(); });
 })();
 
-/* ── NAV SCROLL ──────────────────────────────────── */
+/* ── NAV SCROLL ── */
 const nav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
 });
 
-/* ── SCROLL REVEAL ───────────────────────────────── */
+/* ── SCROLL REVEAL ── */
 const observer = new IntersectionObserver(entries => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
@@ -1417,12 +1421,9 @@ const observer = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-/* ── IMPACT ROW HOVER LINE ───────────────────────── */
-// Handled purely in CSS via the ::after pseudo-element pattern above.
-// Additional: add a subtle data-packet animation on hover
+/* ── IMPACT HOVER ── */
 document.querySelectorAll('.impact-item').forEach(item => {
   item.addEventListener('mouseenter', () => {
     item.style.paddingLeft = '1rem';
