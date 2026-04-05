@@ -1170,7 +1170,176 @@ footer {
         </div>
         <div class="impact-metric">✓<small>Lab Complete</small></div>
       </div>
+<!--
+=====================================================
+  PORTFOLIO UPDATE — Add Projects 3-8
+  
+  Instructions:
+  1. Open your Portfolio repo → index.html
+  2. Find the closing </div> of the DNS/DHCP lab project (project 07)
+     It's the one right before the closing </div> of "impact-list"
+  3. Paste ALL the code below RIGHT AFTER that closing </div>
+     and BEFORE the closing </div> of impact-list
+  4. Commit and push
+=====================================================
+-->
 
+      <!-- ── LAB PROJECT 3: Active Directory ── -->
+      <div class="impact-item lab-project">
+        <div class="impact-idx">08</div>
+        <div class="impact-body">
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/active-directory-lab" target="_blank" rel="noopener">
+              Active Directory Home Lab
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Deployed a Windows Server 2022 domain controller on Microsoft Azure (Standard_D2s_v3) — building the lab.local Active Directory domain with 3 OUs (IT, HR, Management), 3 user accounts, and 3 Group Policy Objects including Password Policy enforcement, HR Desktop Lockdown, and IT Drive Mapping. Managed remotely via Azure Bastion.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Windows Server 2022</span>
+            <span class="impact-tag blue">Active Directory</span>
+            <span class="impact-tag blue">Azure VM</span>
+            <span class="impact-tag blue">Group Policy</span>
+            <span class="impact-tag blue">OUs &amp; Users</span>
+            <span class="impact-tag green">Azure Bastion</span>
+          </div>
+          <a href="https://github.com/Daksh2601/active-directory-lab" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
+        </div>
+        <div class="impact-metric">✓<small>Lab Complete</small></div>
+      </div>
+
+      <!-- ── LAB PROJECT 4: Site-to-Site VPN ── -->
+      <div class="impact-item lab-project">
+        <div class="impact-idx">09</div>
+        <div class="impact-body">
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/site-to-site-vpn-lab" target="_blank" rel="noopener">
+              Site-to-Site IPsec VPN Lab
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Configured a full IKEv1 IPsec VPN tunnel between two Cisco routers (HQ and Branch) in Packet Tracer — implementing Phase 1 (ISAKMP policy with AES encryption, SHA hash, DH Group 2) and Phase 2 (IPsec transform set) with pre-shared key authentication. Verified tunnel establishment with QM_IDLE state and confirmed encrypted traffic flow.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Cisco Packet Tracer</span>
+            <span class="impact-tag blue">IPsec VPN</span>
+            <span class="impact-tag blue">IKEv1</span>
+            <span class="impact-tag blue">AES Encryption</span>
+            <span class="impact-tag blue">Pre-Shared Key</span>
+            <span class="impact-tag green">CCNA Lab</span>
+          </div>
+          <a href="https://github.com/Daksh2601/site-to-site-vpn-lab" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
+        </div>
+        <div class="impact-metric">✓<small>Lab Complete</small></div>
+      </div>
+
+      <!-- ── LAB PROJECT 5: Zabbix Monitoring ── -->
+      <div class="impact-item lab-project">
+        <div class="impact-idx">10</div>
+        <div class="impact-body">
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/network-monitoring-zabbix-lab" target="_blank" rel="noopener">
+              Network Monitoring with Zabbix
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Deployed Zabbix 7.0 LTS on Ubuntu Server 24.04 with MySQL backend and Apache web frontend — monitoring 2 hosts with 77+ live metrics. Built a custom dashboard tracking CPU utilization, memory usage, host availability, active problems, and system clock. Configured alert triggers for high CPU (&gt;90%) with automated notification actions.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Zabbix 7.0 LTS</span>
+            <span class="impact-tag blue">Ubuntu Server</span>
+            <span class="impact-tag blue">SNMP Monitoring</span>
+            <span class="impact-tag blue">Custom Dashboard</span>
+            <span class="impact-tag blue">Alert Triggers</span>
+            <span class="impact-tag green">MySQL</span>
+          </div>
+          <a href="https://github.com/Daksh2601/network-monitoring-zabbix-lab" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
+        </div>
+        <div class="impact-metric">77+<small>Live Metrics</small></div>
+      </div>
+
+      <!-- ── LAB PROJECT 6: pfSense Firewall ── -->
+      <div class="impact-item lab-project">
+        <div class="impact-idx">11</div>
+        <div class="impact-body">
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/pfsense-firewall-lab" target="_blank" rel="noopener">
+              Firewall Lab with pfSense
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Built a pfSense 2.7.2 firewall lab using UTM (QEMU emulation) on M1 Mac — configuring WAN/LAN interfaces, 4 firewall aliases (LAN_NET, ADMIN_HOST, BLOCKED_PORTS, WEB_PORTS), and security rules blocking Telnet while allowing HTTP/HTTPS and DNS. Implemented automatic outbound NAT for internet access from the LAN segment.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">pfSense 2.7.2</span>
+            <span class="impact-tag blue">UTM / QEMU</span>
+            <span class="impact-tag blue">Firewall Rules</span>
+            <span class="impact-tag blue">NAT</span>
+            <span class="impact-tag blue">Aliases</span>
+            <span class="impact-tag green">Network Security</span>
+          </div>
+          <a href="https://github.com/Daksh2601/pfsense-firewall-lab" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
+        </div>
+        <div class="impact-metric">✓<small>Lab Complete</small></div>
+      </div>
+
+      <!-- ── LAB PROJECT 7: Enterprise Network Capstone ── -->
+      <div class="impact-item lab-project">
+        <div class="impact-idx">12</div>
+        <div class="impact-body">
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/enterprise-network-simulation" target="_blank" rel="noopener">
+              Full Enterprise Network Simulation — Capstone
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Capstone project simulating a complete enterprise network connecting HQ and Branch offices in Cisco Packet Tracer — integrating VLANs (10/20/30), inter-VLAN routing via SVI on a 3560 Layer 3 switch, static routing, GRE Tunnel (Tunnel10) for encapsulated site-to-site traffic over a 172.16.0.0/30 overlay, and extended ACLs blocking Branch from HR and Management while permitting IT access. End-to-end verified across 4 hops.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Cisco Packet Tracer</span>
+            <span class="impact-tag blue">VLANs</span>
+            <span class="impact-tag blue">GRE Tunnel</span>
+            <span class="impact-tag blue">Static Routing</span>
+            <span class="impact-tag blue">ACLs</span>
+            <span class="impact-tag blue">L3 Switch</span>
+            <span class="impact-tag green">Capstone</span>
+          </div>
+          <a href="https://github.com/Daksh2601/enterprise-network-simulation" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
+        </div>
+        <div class="impact-metric">4<small>Hops Verified</small></div>
+      </div>
+
+      <!-- ── LAB PROJECT 8: Python Network Automation ── -->
+      <div class="impact-item lab-project">
+        <div class="impact-idx">13</div>
+        <div class="impact-body">
+          <div class="impact-statement">
+            <a href="https://github.com/Daksh2601/python-network-automation" target="_blank" rel="noopener">
+              Python Network Automation
+              <span class="gh-arrow">↗</span>
+            </a>
+          </div>
+          <div class="impact-detail">Built an automated network configuration backup system using Python and Paramiko — connecting to routers via SSH, pulling running configurations, and saving them with timestamps to create a version history. Implemented a mock Cisco router simulator for safe testing, scheduled daily backups via Linux cron job (2:00 AM), and added SMTP email alerting for failed backups. Full audit logging with pass/fail tracking.</div>
+          <div class="impact-tags">
+            <span class="impact-tag green">Python 3.12</span>
+            <span class="impact-tag blue">Paramiko</span>
+            <span class="impact-tag blue">SSH Automation</span>
+            <span class="impact-tag blue">Cron Job</span>
+            <span class="impact-tag blue">Bash</span>
+            <span class="impact-tag green">Ubuntu Server</span>
+          </div>
+          <a href="https://github.com/Daksh2601/python-network-automation" target="_blank" rel="noopener" class="github-link-btn">
+            ↗ View on GitHub
+          </a>
+        </div>
+        <div class="impact-metric">2<small>Routers Automated</small></div>
+      </div>
     </div>
   </div>
 </section>
